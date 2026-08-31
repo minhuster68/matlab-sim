@@ -1,2 +1,1 @@
-load trajectory.mat với mat.mat
-run setup_lqr
+Trước Nhân đăng nhập git vào máy tôi nên tôi commit lên dính tên Nhân nhé =))
