@@ -98,62 +98,35 @@ mpcobj = mpc(sys_nominal, Ts);
 mpcobj.PredictionHorizon = 30;   % Np = 0.30 s
 mpcobj.ControlHorizon    = 5;    % Nc = 0.05 s
 
-%% 5. Trọng số MPC
+%% 5. Trọng số MPC ban đầu ở mức vừa phải
 % Thứ tự output:
 % [int(e1) int(e2) int(e3) e1 e2 e3 ed1 ed2 ed3]
 
-Qz  = [40000, 20000, 40000];    % Trọng số sai số tích phân
-Qe  = [15000, 20000, 30000];    % Trọng số sai số vị trí
-Qed = [50, 50, 50];              % Trọng số sai số vận tốc
+Qz  = [50, 100, 50];                 % Trọng số sai số tích phân
+Qe  = [1000, 8000, 8000];              % Trọng số sai số vị trí
+Qed = [50, 50, 50];                 % Trọng số sai số vận tốc
 
 % PHẢI là vector 1x9, không dùng diag(...)
 mpcobj.Weights.OutputVariables = [Qz, Qe, Qed];
 
 % mv chính là tau_FB
-mpcobj.Weights.ManipulatedVariables = [10, 10, 5];
+mpcobj.Weights.ManipulatedVariables = [5, 5, 5]; % Trọng số momen
 
-% Phạt biến thiên mô-men, giúp lệnh mượt hơn
-mpcobj.Weights.ManipulatedVariablesRate = [1, 1, 0.5];
+% Đây là trọng số làm mượt, không phải ràng buộc cứng
+mpcobj.Weights.ManipulatedVariablesRate = [0.5, 0.2, 0.6];
 
-%% 6. Ràng buộc mô-men phản hồi tau_FB
+%% 6. Ràng buộc duy nhất: mô-men phản hồi tau_FB
 % Lưu ý: tau thuc = tau_FF + tau_FB
-max_tau_fb = [5, 30, 5];         % N.m
-
-%% 7. Ràng buộc tốc độ thay đổi tau_FB
-% Đơn vị: N.m / sample, với Ts = 0.01 s
-max_dTau_fb = [0.5, 2.0, 0.5];
+max_tau_fb = [5, 40, 5];         % N.m
 
 for i = 1:3
     mpcobj.MV(i).Min = -max_tau_fb(i);
     mpcobj.MV(i).Max =  max_tau_fb(i);
-
-    mpcobj.MV(i).RateMin = -max_dTau_fb(i);
-    mpcobj.MV(i).RateMax =  max_dTau_fb(i);
 end
 
-%% 8. Ràng buộc trạng thái lỗi
-% e = q - qd
-% e_dot = q_dot - qd_dot
-%
-% Không ràng buộc z = integral(e), vì dễ làm bài toán khó khả thi
-% khi mô-men bị bão hòa hoặc có nhiễu.
-
-max_e  = deg2rad([5, 5, 5]);     % sai số góc tối đa: 5 độ
-max_de = [1.0, 1.0, 1.0];        % sai số vận tốc tối đa: rad/s
-
-for i = 1:3
-    % Output 4:6 la e1, e2, e3
-    mpcobj.OV(i+3).Min = -max_e(i);
-    mpcobj.OV(i+3).Max =  max_e(i);
-
-    % Output 7:9 la ed1, ed2, ed3
-    mpcobj.OV(i+6).Min = -max_de(i);
-    mpcobj.OV(i+6).Max =  max_de(i);
-end
-
-%% 9. Tải ngoài tại tool_tip
+%% 7. Tải ngoài tại tool_tip
 % Đổi lần lượt 0, 1, 2, 5 [kg] để khảo sát giống mô phỏng LQR và PID.
-payloadMass = 0;
+payloadMass = 1;
 
 % false: tải chỉ tác dụng vật lý vào plant, dùng để đánh giá MPC.
 % true : Inverse Dynamics biết tải và tạo thêm mô-men bù feedforward.
@@ -204,5 +177,3 @@ ts_Fext = timeseries(Fext_array, t_full);
 fprintf(['Đã tạo tải %.1f kg tại tool_tip: ', ...
          'ts_Fload = lực vật lý, bù feedforward = %s.\n'], ...
         payloadMass, mat2str(compensatePayload));
-
-disp('Đã cấu hình Adaptive MPC: Q, mô-men, rate và state constraints.');

@@ -103,18 +103,12 @@ fprintf(['Da import URDF va nap trajectory_new.mat: %.2f s, ', ...
 % =========================================================================
 
 % Vong ngoai - dieu khien vi tri.
-K_pp = [46;
-        60;
-        36];
+K_pp = [46;  60; 36];
 
 % Vong trong - dieu khien van toc.
-K_vp = [8.0;
-        9.5;
-        10.0];
+K_vp = [8.0; 9.5; 10.0];
 
-K_vi = [7.6;
-        7.6;
-        7.6];
+K_vi = [7.6; 7.6; 7.6];
 
 % Vong dong dien/mo-men.
 torque_constant = 0.47; % Nm/A, GIM6010-8
@@ -123,7 +117,7 @@ torque_constant = 0.47; % Nm/A, GIM6010-8
 % 2. TAI NGOAI TAI TOOL_TIP
 % =========================================================================
 
-payloadMass = 5;
+payloadMass = 0;
 
 % false: tai chi tac dung vat ly vao plant, dung de danh gia PID.
 % true : Inverse Dynamics biet tai va tao them mo-men bu feedforward.
