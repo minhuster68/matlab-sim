@@ -101,23 +101,22 @@ mpcobj.ControlHorizon    = 5;    % Nc = 0.05 s
 %% 5. Trọng số MPC ban đầu ở mức vừa phải
 % Thứ tự output:
 % [int(e1) int(e2) int(e3) e1 e2 e3 ed1 ed2 ed3]
-
-Qz  = [50, 100, 50];                 % Trọng số sai số tích phân
-Qe  = [1000, 8000, 8000];              % Trọng số sai số vị trí
-Qed = [50, 50, 50];                 % Trọng số sai số vận tốc
+Qz  = [3, 2, 1];                 % Trọng số sai số tích phân
+Qe  = [10, 9, 10];              % Trọng số sai số vị trí
+Qed = [2, 1, 1];                 % Trọng số sai số vận tốc
 
 % PHẢI là vector 1x9, không dùng diag(...)
 mpcobj.Weights.OutputVariables = [Qz, Qe, Qed];
 
 % mv chính là tau_FB
-mpcobj.Weights.ManipulatedVariables = [5, 5, 5]; % Trọng số momen
+mpcobj.Weights.ManipulatedVariables = [1, 1, 1]; % Trọng số momen
 
 % Đây là trọng số làm mượt, không phải ràng buộc cứng
 mpcobj.Weights.ManipulatedVariablesRate = [0.5, 0.2, 0.6];
 
 %% 6. Ràng buộc duy nhất: mô-men phản hồi tau_FB
 % Lưu ý: tau thuc = tau_FF + tau_FB
-max_tau_fb = [5, 40, 5];         % N.m
+max_tau_fb = [100, 100, 100];         % N.m
 
 for i = 1:3
     mpcobj.MV(i).Min = -max_tau_fb(i);
@@ -126,7 +125,7 @@ end
 
 %% 7. Tải ngoài tại tool_tip
 % Đổi lần lượt 0, 1, 2, 5 [kg] để khảo sát giống mô phỏng LQR và PID.
-payloadMass = 1;
+payloadMass = 0.5;
 
 % false: tải chỉ tác dụng vật lý vào plant, dùng để đánh giá MPC.
 % true : Inverse Dynamics biết tải và tạo thêm mô-men bù feedforward.
