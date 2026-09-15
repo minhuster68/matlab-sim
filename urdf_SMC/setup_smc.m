@@ -162,19 +162,19 @@ fprintf(['Da nap trajectory_new.mat: %.2f s, %d mau, ', ...
 %   tauSMC = inverseDynamics(robot, qActual, dqActual, v)
 
 % He so quyet dinh toc do suy giam sai so tren mat truot.
-lambda = [4; 4; 4];          % [1/s]
+lambda = [15; 75; 155];          % [1/s]
 
 % He so keo bien s ve lop bien quanh mat truot.
-ks = [2; 2; 2];              % [1/s]
+ks = [5; 140; 190];              % [1/s]
 
 % He so ben vung/chong nhieu.
 % Day la gia tri khoi tao de chay mo phong lan dau; se tune theo tai sau.
-kr = [1; 1; 1];              % [rad/s^2]
+kr = [30; 130; 100];              % [rad/s^2]
 
 % Do day lop bien cua ham saturation.
 % Tang phi: giam chattering nhung tang sai so du.
 % Giam phi: bam chinh xac hon nhung mo-men de rung hon.
-phi = [0.03; 0.03; 0.03];    % [rad/s]
+phi = [0.03; 0.05; 0.15];    % [rad/s]
 
 if numel(lambda) ~= 3 || numel(ks) ~= 3 || ...
         numel(kr) ~= 3 || numel(phi) ~= 3
@@ -205,7 +205,7 @@ end
 % Tai nay chi tac dung vat ly vao Plant_new. No KHONG duoc dua vao
 % block Inverse Dynamics, boi vi SMC dang duoc danh gia kha nang chong nhieu.
 
-payloadMass = 0;  % [kg]
+payloadMass = 00;  % [kg]
 
 if ~isscalar(payloadMass) || ~isfinite(payloadMass) || payloadMass < 0
     error('payloadMass phai la mot so huu han va khong am.');
