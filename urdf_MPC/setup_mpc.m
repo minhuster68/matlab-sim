@@ -101,9 +101,9 @@ mpcobj.ControlHorizon    = 5;    % Nc = 0.05 s
 %% 5. Trọng số MPC ban đầu ở mức vừa phải
 % Thứ tự output:
 % [int(e1) int(e2) int(e3) e1 e2 e3 ed1 ed2 ed3]
-Qz  = [3, 2, 1];                 % Trọng số sai số tích phân
-Qe  = [10, 9, 10];              % Trọng số sai số vị trí
-Qed = [2, 1, 1];                 % Trọng số sai số vận tốc
+Qz  = [0, 0, 0];                 % Trọng số sai số tích phân
+Qe  = [10, 25, 10];              % Trọng số sai số vị trí
+Qed = [0, 0, 0];                 % Trọng số sai số vận tốc
 
 % PHẢI là vector 1x9, không dùng diag(...)
 mpcobj.Weights.OutputVariables = [Qz, Qe, Qed];
@@ -112,7 +112,7 @@ mpcobj.Weights.OutputVariables = [Qz, Qe, Qed];
 mpcobj.Weights.ManipulatedVariables = [1, 1, 1]; % Trọng số momen
 
 % Đây là trọng số làm mượt, không phải ràng buộc cứng
-mpcobj.Weights.ManipulatedVariablesRate = [0.5, 0.2, 0.6];
+mpcobj.Weights.ManipulatedVariablesRate = [1, 1, 1];
 
 %% 6. Ràng buộc duy nhất: mô-men phản hồi tau_FB
 % Lưu ý: tau thuc = tau_FF + tau_FB
