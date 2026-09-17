@@ -7,14 +7,14 @@ cfg = mpctune.defaults(setupDir);
 
 %% FIXED EXPERIMENT SETTINGS -- not optimization variables
 cfg.payloadMass = 0.5;
-cfg.trainMasses = 0.5;
+cfg.trainMasses = [0.5 1];
 cfg.validationMasses = [0 0.5 1];
 cfg.compensatePayload = false;
 cfg.gravity = [0 0 -9.81];
 
 % Total actuator limits and feedback slew limits used by every candidate.
 cfg.tauMax = [5 40 5];
-cfg.fbSlewMax = [50 200 50];
+cfg.fbSlewMax = [100 200 100];
 
 % Fixed score definition used by every candidate.
 cfg.score.positionScale = [0.02 0.02 0.02];
@@ -25,8 +25,9 @@ cfg.score.weights = [1 0.5 0.10 0.02 0.005];
 % Group order: [Qz, base-Qe, Qed, R, Rdu]; Qe is multiplied by [1 2.5 1].
 % Therefore trial 1 of a FULL run is the known quick controller, and a new
 % controller is selected only if held-out validation improves by >= 0.5%.
-cfg.initialWeights = [0.1376 3.1641 0.2884 0.2268 0.3757];
-cfg.initialHorizons = [20 10];
+cfg.initialWeights = [1.3067 1.1822 0.0200 0.0695 0.0479];
+
+cfg.initialHorizons = [30 10];
 
 %% Build nonzero nominal model and prepare an isolated Simulink copy
 mpcTune = mpctune.build_context(cfg);

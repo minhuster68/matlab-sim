@@ -75,17 +75,17 @@ sys_nominal = ss(A0,B0,C0,D0,Ts);
 
 %% 4. Bo tham so duoc autotune va validation
 % Bộ tham số MPC sau khi autotune full
-Np = 30;
+Np = 40;
 Nc = 10;
 
-mpcobj = mpc(sys_nominal, Ts, Np, Nc);
+mpcobj = mpc(sys_nominal,Ts,Np,Nc);
 
-Qz  = [1.3067 1.3067 1.3067];
-Qe  = [1.1822 2.9554 1.1822];
+Qz  = [2 2 2];
+Qe  = [0.6271 1.5677 0.6271];
 Qed = [0.0200 0.0200 0.0200];
 
-R   = [0.0695 0.0695 0.0695];
-Rdu = [0.0479 0.0479 0.0479];
+R   = [0.0097 0.0097 0.0097];
+Rdu = [0.0300 0.0300 0.0300];
 
 mpcobj.Weights.OutputVariables = [Qz Qe Qed];
 mpcobj.Weights.ManipulatedVariables = R;
@@ -93,7 +93,7 @@ mpcobj.Weights.ManipulatedVariablesRate = Rdu;
 % ScaleFactor la mot phan cua cau hinh da duoc tune; khong bo qua.
 outputScales = [0.25 0.25 0.25 0.05 0.05 0.05 0.10 0.10 0.10];
 tauMax = [5 40 5];                         % gioi han tong moment, N.m
-fbSlewMax = [50 200 50];                  % toc do tau_FB, N.m/s
+fbSlewMax = [100 200 100];                  % toc do tau_FB, N.m/s
 for i = 1:9
     mpcobj.OV(i).ScaleFactor = outputScales(i);
 end
