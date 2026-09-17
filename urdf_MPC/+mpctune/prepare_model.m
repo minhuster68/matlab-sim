@@ -121,15 +121,32 @@ end
 
 % Backup actuator saturation is not used to hide infeasible candidates:
 % command vs applied is logged, and any clipping causes candidate rejection.
-old=[mdl '/Sum2']; p=get_param(old,'PortHandles');
-lh=get_param(p.Outport(1),'Line'); dst=destinations(p.Outport(1));
-delete_line(lh);
 sat=[mdl '/Total_Torque_Limit'];
-add_block('simulink/Discontinuities/Saturation',sat, ...
-    'UpperLimit','mpc_tau_limit','LowerLimit','-mpc_tau_limit', ...
-    'Position',[1570 35 1630 75]);
-sp=get_param(sat,'PortHandles'); add_line(mdl,p.Outport(1),sp.Inport(1));
-for j=1:numel(dst), add_line(mdl,sp.Outport(1),dst(j),'autorouting','on'); end
+if getSimulinkBlockHandle(sat)>0
+    % The normal runtime model may already contain this safety block.  Reuse
+    % it so the same urdf.slx can serve runtime and autotuning workflows.
+    assert(strcmp(get_param(sat,'BlockType'),'Saturate'), ...
+        'mpctune:Topology', ...
+        'Existing Total_Torque_Limit must be a Simulink Saturation block.');
+    assert_block_parameter(sat,'UpperLimit');
+    assert_block_parameter(sat,'LowerLimit');
+    set_param(sat,'UpperLimit','mpc_tau_limit', ...
+        'LowerLimit','-mpc_tau_limit');
+    must_connect(mdl,'Sum2',1,'Total_Torque_Limit',1);
+    sp=get_param(sat,'PortHandles');
+    destinations(sp.Outport(1)); % assert that the limiter still drives the plant
+else
+    old=[mdl '/Sum2']; p=get_param(old,'PortHandles');
+    lh=get_param(p.Outport(1),'Line'); dst=destinations(p.Outport(1));
+    delete_line(lh);
+    add_block('simulink/Discontinuities/Saturation',sat, ...
+        'UpperLimit','mpc_tau_limit','LowerLimit','-mpc_tau_limit', ...
+        'Position',[1570 35 1630 75]);
+    sp=get_param(sat,'PortHandles'); add_line(mdl,p.Outport(1),sp.Inport(1));
+    for j=1:numel(dst)
+        add_line(mdl,sp.Outport(1),dst(j),'autorouting','on');
+    end
+end
 
 log_output(mdl,'Mux',1,'tune_q',780);
 log_output(mdl,'Mux1',1,'tune_dq',820);
