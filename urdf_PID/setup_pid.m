@@ -117,7 +117,7 @@ torque_constant = 0.47; % Nm/A, GIM6010-8
 % 2. TAI NGOAI TAI TOOL_TIP
 % =========================================================================
 
-payloadMass = 0;
+payloadMass = 1.0;
 
 % false: tai chi tac dung vat ly vao plant, dung de danh gia PID.
 % true : Inverse Dynamics biet tai va tao them mo-men bu feedforward.
