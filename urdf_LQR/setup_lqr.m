@@ -1,5 +1,5 @@
 % =========================================================================
-% SETUP LQR - GAIN SCHEDULING (TIME-VARYING LQR)
+% SETUP LQR/LQI - GAIN SCHEDULING, MUC TIEU BAM VI TRI
 % Tay máy: 3-DOF
 % =========================================================================
 clear; close all; clc;
@@ -106,40 +106,27 @@ delta = 1e-5; % Bước vi phân
 % 1. Chọn Q, R theo luật Bryson (TUNE RIÊNG TỪNG KHỚP)
 % Thứ tự mảng: [Khớp Base, Khớp Shoulder, Khớp Elbow]
 % =========================================================================
+max_int_e = [10, 20.0, 10.0];
+max_e = [0.05, 0.02, 0.01];
 
-max_int_e = [10, 20.0, 10.0];   
-max_e = [0.05, 0.02, 0.01];       
-max_de = [10.0, 10.0, 10.0];
-% Giới hạn mô-men cho từng khớp (R matrix)
-max_tau_base = 5;      
-max_tau_shoulder = 40; 
-max_tau_elbow = 5;     
-%Tạo ma trận Q (9x9) và R (3x3) bằng toán tử mảng (.^)
-Q = diag([1./max_int_e.^2, 1./max_e.^2, 1./max_de.^2]);
+Q_int = 1 ./ max_int_e.^2;
+Q_pos = 1 ./ max_e.^2;
+Q_vel = [0, 0, 0];
+Q = diag([Q_int, Q_pos, Q_vel]); % 9-by-9, ban xac dinh duong
+
+% Thang mo-men dung de chon R, KHONG tu ap dat bao hoa mo-men.
+max_tau_base = 5;
+max_tau_shoulder = 40;
+max_tau_elbow = 5;
 R = diag([1/max_tau_base^2, 1/max_tau_shoulder^2, 1/max_tau_elbow^2]);
-
-% Q1 = 50;
-% Q2 = 50;
-% Q3 = 50;
-% Q4 = 5000;
-% Q5 = 5000;
-% Q6 = 15000;
-% Q7 = 50;
-% Q8 = 50;
-% Q9 = 50;
-
-% R1 = 500;
-% R2 = 500;
-% R3 = 500;
-
-% Q = diag([Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9]);
-% R = diag([R1, R2, R3]);
 
 % =========================================================================
 % 2. QUÉT QUỸ ĐẠO VÀ TÍNH MA TRẬN K LIÊN TỤC
 % q_full, qd_full, qdd_full và t_full đã được tạo ở mục 0.3 phía trên.
 % =========================================================================
-disp('Đang tính toán Time-Varying LQR dọc theo quỹ đạo. Vui lòng chờ...');
+% Giai CARE rieng tai tung diem (frozen-time gain scheduling);
+% khong phai giai phuong trinh Riccati vi phan cua TVLQR huu han.
+disp('Dang tinh gain LQR/LQI doc quy dao cho muc tieu bam vi tri...');
 
 N = length(t_full);
 K_array = zeros(3, 9, N); % Mảng 3D chứa toàn bộ ma trận K
@@ -189,7 +176,7 @@ ts_K = timeseries(K_array, t_full);
 % =========================================================================
 
 % Khối lượng tải cần khảo sát. Đổi lần lượt: 0, 1, 2, 5 [kg].
-payloadMass = 1;
+payloadMass = 0; % Bat dau tune khong tai, cung dieu kien voi PID moi.
 
 % false: tải chỉ tác dụng vật lý vào plant; dùng để đánh giá khả năng chống
 %        nhiễu/độ bền vững của LQR.
@@ -261,4 +248,5 @@ fprintf(['Đã tạo tải %.1f kg tại tool_tip: ', ...
          'ts_Fload = lực vật lý, bù feedforward = %s.\n'], ...
         payloadMass, mat2str(compensatePayload));
 
-disp('Đã tạo xong bộ từ điển LQR (ts_K)! Sẵn sàng chạy Simulink.');
+disp('Da tao ts_K cho muc tieu bam vi tri (Q_vel = 0).');
+disp('Simulink giu x_e = [integral(e); e; de], tau_cmd = tau_ff - K*x_e.');
