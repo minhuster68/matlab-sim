@@ -1,8 +1,8 @@
 % =========================================================================
-% SETUP ADAPTIVE MPC CHAY CHINH - THAM SO DA DUOC VALIDATE
+% SETUP ADAPTIVE MPC - MUC TIEU BAM VI TRI
 % =========================================================================
 % Thu tu chay:
-%   setup_mpc_runtime
+%   setup_mpc
 %   out = sim('urdf');
 %   plot_mpc_trajectory
 
@@ -73,8 +73,8 @@ assert(norm(A0,'fro')>0 && norm(B0,'fro')>0, ...
     'Mo hinh danh dinh A0/B0 khong hop le.');
 sys_nominal = ss(A0,B0,C0,D0,Ts);
 
-%% 4. Bo tham so duoc autotune va validation
-% Bộ tham số MPC sau khi autotune full
+%% 4. Trong so cho muc tieu bam vi tri
+% Giu tham so autotune cu lam diem khoi dau; Qed moi chua duoc validate.
 Np = 40;
 Nc = 10;
 
@@ -82,7 +82,7 @@ mpcobj = mpc(sys_nominal,Ts,Np,Nc);
 
 Qz  = [2 2 2];
 Qe  = [0.6271 1.5677 0.6271];
-Qed = [0.0200 0.0200 0.0200];
+Qed = [0 0 0]; % Khong phat rieng sai so van toc
 
 R   = [0.0097 0.0097 0.0097];
 Rdu = [0.0300 0.0300 0.0300];
@@ -128,7 +128,7 @@ mpcobj.Model.Nominal.U = zeros(3,1);
 mpcobj.Model.Nominal.DX = zeros(9,1);
 
 %% 6. Tai ngoai tai tool_tip
-payloadMass = 0;
+payloadMass = 0.5;
 compensatePayload = false;
 assert(isscalar(payloadMass) && isfinite(payloadMass) && payloadMass>=0, ...
     'payloadMass phai la so huu han va khong am.');
@@ -152,7 +152,7 @@ if compensatePayload && payloadMass>0
 end
 ts_Fext = timeseries(Fext_array,t_full);
 
-%% 7. Dong bo cau hinh cua urdf.slx voi lan validation
+%% 7. Giu cau hinh solver va lay mau cua mo hinh hien tai
 modelFile = fullfile(setupDir,'urdf.slx');
 assert(isfile(modelFile),'Khong tim thay: %s',modelFile);
 load_system(modelFile);
