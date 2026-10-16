@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="0.Assem_tong.SLDASM">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.269439843183932 0.28864640978465 0.510305429832032"
+        rpy="0 0 0" />
+      <mass
+        value="6.78071383810196" />
+      <inertia
+        ixx="0.292982115231116"
+        ixy="2.4289243215857E-05"
+        ixz="1.48741255187707E-05"
+        iyy="0.157616658426692"
+        iyz="-0.0223532567301581"
+        izz="0.315548948805223" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="shoulder_link">
+    <inertial>
+      <origin
+        xyz="-0.12963 0.0049354 -0.047727"
+        rpy="0 0 0" />
+      <mass
+        value="0.078544" />
+      <inertia
+        ixx="0.00012022"
+        ixy="8.4806E-07"
+        ixz="7.3469E-05"
+        iyy="0.00018895"
+        iyz="-7.8739E-07"
+        izz="0.00010379" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="meshes/shoulder_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="meshes/shoulder_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="base_joint"
+    type="continuous">
+    <origin
+      xyz="0.031381 -0.4859 0.64671"
+      rpy="1.3324 1.3617 1.5011" />
+    <parent
+      link="base_link" />
+    <child
+      link="shoulder_link" />
+    <axis
+      xyz="0.99932 -0.031099 -0.019999" />
+  </joint>
+  <link
+    name="upper_arm_link">
+    <inertial>
+      <origin
+        xyz="-0.022717 0.105 -0.10081"
+        rpy="0 0 0" />
+      <mass
+        value="1.2678" />
+      <inertia
+        ixx="0.0046939"
+        ixy="-0.00010628"
+        ixz="-0.00025724"
+        iyy="0.0053714"
+        iyz="-0.00041298"
+        izz="0.0011133" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="meshes/upper_arm_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.5451 0 0.87059 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="meshes/upper_arm_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="shoulder_joint"
+    type="continuous">
+    <origin
+      xyz="-0.049966 0.001555 0.00099995"
+      rpy="-1.376 0.014725 1.3742" />
+    <parent
+      link="shoulder_link" />
+    <child
+      link="upper_arm_link" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="lower_arm_link">
+    <inertial>
+      <origin
+        xyz="0.20796 0.011597 0.034173"
+        rpy="0 0 0" />
+      <mass
+        value="0.73459" />
+      <inertia
+        ixx="0.00058901"
+        ixy="2.0268E-05"
+        ixz="0.000249"
+        iyy="0.0015799"
+        iyz="8.7918E-06"
+        izz="0.0017158" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="meshes/lower_arm_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 0.5098 0.19608 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="meshes/lower_arm_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="elbow_joint"
+    type="continuous">
+    <origin
+      xyz="-0.016796 0 -0.2118"
+      rpy="1.5708 1.542 3.1416" />
+    <parent
+      link="upper_arm_link" />
+    <child
+      link="lower_arm_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+</robot>
