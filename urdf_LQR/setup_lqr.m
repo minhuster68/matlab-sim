@@ -176,7 +176,7 @@ ts_K = timeseries(K_array, t_full);
 % =========================================================================
 
 % Khối lượng tải cần khảo sát. Đổi lần lượt: 0, 1, 2, 5 [kg].
-payloadMass = 0; % Bat dau tune khong tai, cung dieu kien voi PID moi.
+payloadMass = 0.5; % Bat dau tune khong tai, cung dieu kien voi PID moi.
 
 % false: tải chỉ tác dụng vật lý vào plant; dùng để đánh giá khả năng chống
 %        nhiễu/độ bền vững của LQR.
@@ -250,3 +250,16 @@ fprintf(['Đã tạo tải %.1f kg tại tool_tip: ', ...
 
 disp('Da tao ts_K cho muc tieu bam vi tri (Q_vel = 0).');
 disp('Simulink giu x_e = [integral(e); e; de], tau_cmd = tau_ff - K*x_e.');
+
+%% ESO
+TsESO = 0.001;
+omegaESO = [15; 15; 15];
+ESOenable = 1;
+
+pESO = exp(-omegaESO .* TsESO);
+
+L1ESO = 1 - pESO.^3;
+L2ESO = 1.5 .* (1-pESO).^2 .* (1+pESO) ./ TsESO;
+L3ESO = (1-pESO).^3 ./ TsESO^2;
+
+x0ESO = [q_full(1,:).'; zeros(3,1); zeros(3,1); 0];
