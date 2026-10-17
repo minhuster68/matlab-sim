@@ -169,3 +169,17 @@ fprintf(['Da tao tai %.1f kg tai tool_tip: ', ...
 disp('Da nap PID vi tri mot vong. Hay sua ket noi Simulink truoc khi Run.');
 fprintf('Kp = %s, Ki = %s, Kd = %s, N_pid = %.1f 1/s.\n', ...
     mat2str(Kp.'), mat2str(Ki.'), mat2str(Kd.'), N_pid);
+%% Tham so ESO
+TsESO = 0.001;
+omegaESO = [15; 15; 15];
+ESOenable = 1;
+
+% Gain hieu chinh roi rac
+pESO = exp(-omegaESO .* TsESO);
+
+L1ESO = 1 - pESO.^3;
+L2ESO = 1.5 .* (1-pESO).^2 .* (1+pESO) ./ TsESO;
+L3ESO = (1-pESO).^3 ./ TsESO^2;
+
+% [qHat(3); vHat(3); dHat(3); co khoi tao(1)]
+x0ESO = [q_full(1,:).'; zeros(3,1); zeros(3,1); 0];
