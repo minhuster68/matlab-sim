@@ -114,7 +114,7 @@ N_pid = 100;                 % 1/s, cuc bo loc D tai -N_pid
 % 2. TAI NGOAI TAI TOOL_TIP
 % =========================================================================
 
-payloadMass = 1.0;
+payloadMass = 0.5;
 
 % false: tai chi tac dung vat ly vao plant, dung de danh gia PID.
 % true : Inverse Dynamics biet tai va tao them mo-men bu feedforward.
