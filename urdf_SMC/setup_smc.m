@@ -205,7 +205,7 @@ end
 % Tai nay chi tac dung vat ly vao Plant_new. No KHONG duoc dua vao
 % block Inverse Dynamics, boi vi SMC dang duoc danh gia kha nang chong nhieu.
 
-payloadMass = 1;  % [kg]
+payloadMass = 0.5;  % [kg]
 
 if ~isscalar(payloadMass) || ~isfinite(payloadMass) || payloadMass < 0
     error('payloadMass phai la mot so huu han va khong am.');
@@ -221,4 +221,19 @@ Fg_world = payloadMass * robot.Gravity;       % 1-by-3 [N]
 Fload_array = repmat(Fg_world, N, 1);         % N-by-3 [N]
 ts_Fload = timeseries(Fload_array, t_full);
 
+%% THAM SO ESO
+TsESO = 0.001;             % Chu ky ESO: 1 ms
+omegaESO = [15; 15; 15];   % Gia tri khoi dau, rad/s
+ESOenable = 0;             % Ban dau chua bu nhieu
+
+pESO = exp(-omegaESO .* TsESO);
+
+L1ESO = 1 - pESO.^3;
+L2ESO = 1.5 .* (1-pESO).^2 .* (1+pESO) ./ TsESO;
+L3ESO = (1-pESO).^3 ./ TsESO^2;
+
+x0ESO = [q_full(1,:).';
+         zeros(3,1);
+         zeros(3,1);
+         0];
 
