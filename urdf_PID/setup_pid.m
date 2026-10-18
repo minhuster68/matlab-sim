@@ -106,7 +106,7 @@ fprintf(['Da import URDF va nap trajectory_new.mat: %.2f s, ', ...
 % tau_cmd = tau_ff + tau_fb (Nm)
 % =========================================================================
 Kp = [10; 50; 50]; % Nm/rad
-Ki = [5; 0; 0];               % Nm/(rad*s): bat dau voi PD
+Ki = [5; 10; 5];               % Nm/(rad*s): bat dau voi PD
 Kd = [3; 3; 3];   % Nm*s/rad
 N_pid = 100;                 % 1/s, cuc bo loc D tai -N_pid
 
@@ -114,7 +114,7 @@ N_pid = 100;                 % 1/s, cuc bo loc D tai -N_pid
 % 2. TAI NGOAI TAI TOOL_TIP
 % =========================================================================
 
-payloadMass = 1.0;
+payloadMass = 0.2;
 
 % false: tai chi tac dung vat ly vao plant, dung de danh gia PID.
 % true : Inverse Dynamics biet tai va tao them mo-men bu feedforward.

@@ -128,7 +128,7 @@ mpcobj.Model.Nominal.U = zeros(3,1);
 mpcobj.Model.Nominal.DX = zeros(9,1);
 
 %% 6. Tai ngoai tai tool_tip
-payloadMass = 0.5;
+payloadMass = 0.2;
 compensatePayload = false;
 assert(isscalar(payloadMass) && isfinite(payloadMass) && payloadMass>=0, ...
     'payloadMass phai la so huu han va khong am.');
