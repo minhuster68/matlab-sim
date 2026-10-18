@@ -152,8 +152,21 @@ if compensatePayload && payloadMass>0
 end
 ts_Fext = timeseries(Fext_array,t_full);
 
+%% Tham so ESO
+TsESO = Ts;                 % Cung chu ky MPC: 0.01 s
+omegaESO = [15; 15; 15];     % Gia tri thu ban dau
+ESOenable = 1;
+
+pESO = exp(-omegaESO .* TsESO);
+
+L1ESO = 1 - pESO.^3;
+L2ESO = 1.5 .* (1-pESO).^2 .* (1+pESO) ./ TsESO;
+L3ESO = (1-pESO).^3 ./ TsESO^2;
+
+x0ESO = [q_full(1,:).'; zeros(3,1); zeros(3,1); 0];
+
 %% 7. Giu cau hinh solver va lay mau cua mo hinh hien tai
-modelFile = fullfile(setupDir,'urdf.slx');
+modelFile = fullfile(setupDir,'urdf_mpc_eso.slx');
 assert(isfile(modelFile),'Khong tim thay: %s',modelFile);
 load_system(modelFile);
 modelName = 'urdf';
