@@ -224,7 +224,7 @@ ts_Fload = timeseries(Fload_array, t_full);
 %% THAM SO ESO
 TsESO = 0.001;             % Chu ky ESO: 1 ms
 omegaESO = [15; 15; 15];   % Gia tri khoi dau, rad/s
-ESOenable = 0;             % Ban dau chua bu nhieu
+ESOenable = 1;             % Ban dau chua bu nhieu
 
 pESO = exp(-omegaESO .* TsESO);
 
