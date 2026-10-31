@@ -53,7 +53,7 @@ end
 % trajectory_new.mat da gom pha di tu q = [0 0 0], pha quet va pha quay ve,
 % vi vay khong chen them approach trong setup PID.
 % =========================================================================
-trajectoryFile = fullfile(setupDir, 'trajectory_new.mat');
+trajectoryFile = fullfile(setupDir, ['trajectory_square.mat']);
 if ~isfile(trajectoryFile)
     error('Khong tim thay file quy dao: %s', trajectoryFile);
 end
@@ -114,7 +114,7 @@ N_pid = 100;                 % 1/s, cuc bo loc D tai -N_pid
 % 2. TAI NGOAI TAI TOOL_TIP
 % =========================================================================
 
-payloadMass = 0.2;
+payloadMass = 0.5;
 
 % false: tai chi tac dung vat ly vao plant, dung de danh gia PID.
 % true : Inverse Dynamics biet tai va tao them mo-men bu feedforward.

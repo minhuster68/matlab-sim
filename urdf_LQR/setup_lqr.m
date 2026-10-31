@@ -54,7 +54,7 @@ end
 % trajectory_new.mat đã bao gồm pha chuyển từ q = [0 0 0], pha quét,
 % và pha quay về; không chèn thêm approach ở đây.
 % =========================================================================
-trajectoryFile = fullfile(setupDir, 'trajectory_new.mat');
+trajectoryFile = fullfile(setupDir, 'trajectory_square.mat');
 if ~isfile(trajectoryFile)
     error('Không tìm thấy file quỹ đạo: %s', trajectoryFile);
 end
@@ -176,7 +176,7 @@ ts_K = timeseries(K_array, t_full);
 % =========================================================================
 
 % Khối lượng tải cần khảo sát. Đổi lần lượt: 0, 1, 2, 5 [kg].
-payloadMass = 0.5; % Bat dau tune khong tai, cung dieu kien voi PID moi.
+payloadMass = 0.2; % Bat dau tune khong tai, cung dieu kien voi PID moi.
 
 % false: tải chỉ tác dụng vật lý vào plant; dùng để đánh giá khả năng chống
 %        nhiễu/độ bền vững của LQR.
