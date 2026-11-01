@@ -80,7 +80,7 @@ end
 %   qd  : N-by-3, van toc mong muon [rad/s]
 %   qdd : N-by-3, gia toc mong muon [rad/s^2]
 
-trajectoryFile = fullfile(setupDir, 'trajectory_new.mat');
+trajectoryFile = fullfile(setupDir, 'trajectory_square.mat');
 
 if ~isfile(trajectoryFile)
     error('Khong tim thay file quy dao: %s', trajectoryFile);
@@ -205,7 +205,7 @@ end
 % Tai nay chi tac dung vat ly vao Plant_new. No KHONG duoc dua vao
 % block Inverse Dynamics, boi vi SMC dang duoc danh gia kha nang chong nhieu.
 
-payloadMass = 0.2;  % [kg]
+payloadMass = 0.5;  % [kg]
 
 if ~isscalar(payloadMass) || ~isfinite(payloadMass) || payloadMass < 0
     error('payloadMass phai la mot so huu han va khong am.');

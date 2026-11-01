@@ -54,7 +54,7 @@ end
 % trajectory_new.mat đã bao gồm pha chuyển từ q = [0 0 0], pha quét,
 % và pha quay về; không chèn thêm approach ở đây.
 % =========================================================================
-trajectoryFile = fullfile(setupDir, 'trajectory_new.mat');
+trajectoryFile = fullfile(setupDir, 'trajectory_square.mat');
 if ~isfile(trajectoryFile)
     error('Không tìm thấy file quỹ đạo: %s', trajectoryFile);
 end
